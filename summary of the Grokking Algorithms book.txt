@@ -4,12 +4,14 @@ Breadth-first search.
 
 Графы реализованы в Python в качестве словарей. Графы имеют узлы и ребра и призваны найти кратчайшее и самое дешевое расстояние от узла A до узла B. Задача: найти среди друзей в телефонной книге продавца манго.
 Алгоритм поиска состоит из 6 пунктов:
-Создать словарь в котором значению “ключ” будет соответствовать имя человека, value - список его связей.
-Извлечь из очереди непроверенного человека.
-Проверить является ли человек продавцом манго.
-Здесь ветвление: если человек найден, выходим из цикла, если нет, проверяем список его контактов.
-Работает цикл.
-Если очередь пуста - выходим из программы.
+1. Create a new dictionary where a key equal name of human, value equal friends of human.
+2. Extract a next person.
+3. Check an unverified person.
+4. There is a branch here: if human is a mango's seller - ends a cycle, else adds all friends of human.
+5. Cycle works.
+6. If the queue is empty the end.
+
+from collections import deque # функция  deque() создает очередь из итерируемого объекта
 
 graph = {}
 graph [ "you"] = [ "alice", "bob", "claire"]
@@ -20,6 +22,23 @@ graph["anuj"] = []
 graph["peggy"] = []
 graph["thom"] = []
 graph("jonny"] = [] 
-from collections import deque
-search_queue = deque()
 
+def search(name):
+	search_queue = deque()							# создает новую очередь
+	search_queue += graph["you"] 					# alice, bob, claire добавляются в очередь поиска
+	searched = []										# массив для отслеживания проверенных людей
+	while search_queue: 								# so search_queue == True
+		person = search_queue.popleft()				# popleft() - удаляет и возвращает первый элемент очереди
+		if not person in searched:						# проверка продолжится при условии что человек ранее не проверялся
+			if person_is_seller(person):				# функция проверяет евляется ли человек продавцом манго
+				print person + "is a mango seller!"
+				return True
+		else:
+			search_queue += graph[person]			# если не является, все его друзья добавляются в очередь поиска
+	return False										# выходим из цикла если перебрали всех друзей и продавец не найден
+
+search("you")
+
+def person_is_seller(name):
+	return name[-1] == 'm'							# если последнее буква в имени 'm' , то он продавец манго
+	
