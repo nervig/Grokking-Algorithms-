@@ -11,34 +11,36 @@ Breadth-first search.
 5. Cycle works.
 6. If the queue is empty the end.
 
-from collections import deque # функция  deque() создает очередь из итерируемого объекта
+from collections import deque  # функция  deque() создает очередь из итерируемого объекта
 
 graph = {}
-graph [ "you"] = [ "alice", "bob", "claire"]
-graph("bob"] = ("anuj", "peggy"]
+graph["you"] = ["alice", "bob", "claire"]
+graph["bob"] = ["anuj", "peggy"]
 graph["alice"] = ["peggy"]
-graph["claire"] = ["thom", "jonny"]
-graph["anuj"] = []
+graph["claire"] = ["thom", 'jonny']
+graph["anuj"] = ["mango"]
 graph["peggy"] = []
 graph["thom"] = []
-graph("jonny"] = [] 
+graph["jonny"] = []
+
 
 def search(name):
-	search_queue = deque()							# создает новую очередь
-	search_queue += graph["you"] 					# alice, bob, claire добавляются в очередь поиска
-	searched = []										# массив для отслеживания проверенных людей
-	while search_queue: 								# so search_queue == True
-		person = search_queue.popleft()				# popleft() - удаляет и возвращает первый элемент очереди
-		if not person in searched:						# проверка продолжится при условии что человек ранее не проверялся
-			if person_is_seller(person):				# функция проверяет евляется ли человек продавцом манго
-				print person + "is a mango seller!"
-				return True
-		else:
-			search_queue += graph[person]			# если не является, все его друзья добавляются в очередь поиска
-	return False										# выходим из цикла если перебрали всех друзей и продавец не найден
-
-search("you")
+    search_queue = deque()  # создает новую очередь
+    search_queue += graph[name]  # alice, bob, claire добавляются в очередь поиска
+    searched = []  # массив для отслеживания проверенных людей
+    while search_queue:  # so search_queue == True
+        person = search_queue.popleft()  # popleft() - удаляет и возвращает первый элемент очереди
+        if person not in searched:  # проверка продолжится при условии что человек ранее не проверялся
+            if person_is_seller(person):  # функция проверяет евляется ли человек продавцом манго
+                print(person + " is a mango seller!")
+                return True
+            else:
+                search_queue += graph[person]  # если не является, все его друзья добавляются в очередь поиска
+                searched.append(person) # проверенных людей добавляем в массив
+    return False  # выходим из цикла если перебрали всех друзей и продавец не найден
 
 def person_is_seller(name):
-	return name[-1] == 'm'							# если последнее буква в имени 'm' , то он продавец манго
+    return name[:] == 'mango'  # если есть имя  'mango' , то он продавец манго
+
+search("you")
 	
